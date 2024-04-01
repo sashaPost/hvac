@@ -1,2 +1,0 @@
-01.04.2024; 19:16
-1. Run 'python manage.py makemessages -l uk' and 'python manage.py makemessages -l en' to create locale (.po) files;

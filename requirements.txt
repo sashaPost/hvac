@@ -1,0 +1,5 @@
+asgiref==3.8.1
+Django==5.0.3
+django-ckeditor==6.7.1
+django-js-asset==2.2.0
+sqlparse==0.4.4

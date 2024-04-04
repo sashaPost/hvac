@@ -13,21 +13,25 @@ class VehicleType(models.Model):
     name = models.CharField(max_length=100, choices=CAR_TYPE_CHOICES)
     
 class Vehicle(models.Model):
-    car_type = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
+    vehicle_type = models.ForeignKey(VehicleType, on_delete=models.CASCADE)
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.IntegerField()
     
 class FuelEngineVehicle(Vehicle):
-    engine_capacity = models.DecimalField(max_digits=5, decimal_places=2)
+    engine_capacity = models.DecimalField(max_digits=3, decimal_places=1)
     
 class Case(models.Model):
     title = models.CharField(max_length=255)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     description = RichTextUploadingField()
-    # Fields for images and videos (consider using ImageField, FileField)
+    preview_image = models.ImageField(upload_to='images')
+    preview_image_alt = models.CharField(max_length=255, blank=True)
+    
+    # !!! haven't migrated yet
+    # main_page_visibility = models.BooleanField(default=True)
     
 class CaseImage(models.Model):
-    """Images related to the case"""
-    # link the models!
-    pass
+    case = models.ForeignKey(Case, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images')
+    image_alt = models.CharField(max_length=255, blank=True)

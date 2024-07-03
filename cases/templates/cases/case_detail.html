@@ -4,5 +4,5 @@
 
 {% block content %}
     <h1>{{ case.title }}</h1>
-    <p>{{ case.description }}</p>
+    <p>{{ case.description|safe }}</p>
 {% endblock %}

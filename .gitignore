@@ -13,3 +13,7 @@ cases/__pycache__/
 core/__pycache__/
 
 .history/
+
+static/
+
+alg_test.py

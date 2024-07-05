@@ -1,28 +1,57 @@
 {% load static %}
 
-<header class="bg-light py-3">
-    <div class="container d-flex justify-content-between align-items-center">
-        <div class="logo">
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <img src="{% static 'images/company_logo.png' %}" alt="Company Logo" class="img-fluid me-2" width="40" height="32">
+            <span class="fs-4">Company Name</span>
+        </a>
+
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'cases' %}active{% endif %}" href="{% url 'cases' %}">Cases</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'contacts' %}active{% endif %}" href="{% url 'contacts' %}">Contacts</a>
+            </li>
+        </ul>
+    </header>
+</div>
+
+
+
+{#{% load static %}#}
+{##}
+{#<header class="bg-light py-3">#}
+{#    <div class="container d-flex justify-content-between align-items-center">#}
+{#        <div class="logo">#}
 {#            <a href="{% url 'home' %}">#}
-            <a href="#">
-                <img src="{% static 'images/company_logo.png' %}" alt="Company Logo" class="img-fluid">
-            </a>
-        </div>
-        <nav>
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Cases</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contacts</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</header>
+{#            <a href="#">#}
+{#                <img src="{% static 'images/company_logo.png' %}" alt="Company Logo" class="img-fluid">#}
+{#            </a>#}
+{#        </div>#}
+{#        <nav>#}
+{#            <ul class="nav">#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'home' %}">Home</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'about' %}">About</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'cases' %}">Cases</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'contacts' %}">Contacts</a>#}
+{#                </li>#}
+{#            </ul>#}
+{#        </nav>#}
+{#    </div>#}
+{#</header>#}
+{##}

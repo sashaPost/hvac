@@ -1,0 +1,26 @@
+{% for case in cases %}
+    <div class="case">
+        <h2>{{ case.title }}</h2>
+        <p>{{ case.description }}</p>
+    </div>
+{% endfor %}
+
+
+{#<div class="row">#}
+{#    {% for case in cases %}#}
+{#    <div class="col-md-4 mb-4">#}
+{#        <div class="card">#}
+{#            <img src="{% if case.preview_image %}{{ case.preview_image.url }}{% endif %}" class="card-img-top">#}
+{#            <div class="card-body">#}
+{#                <h5 class="card-title">{{ case.title }}</h5>#}
+{#                <button class="btn btn-primary"#}
+{#                        hx-get="{% url 'case-detail' case.id %}"#}
+{#                        hx-target="#caseDetailContent"#}
+{#                        hx-trigger="click"#}
+{#                        data-bs-toggle="modal"#}
+{#                        data-bs-target="#caseDetailModal">View Details</button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    {% endfor %}#}
+{#</div>#}

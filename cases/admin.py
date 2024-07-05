@@ -6,6 +6,7 @@ from .models import (
     VehicleType,
     Vehicle,
     CaseImage,
+    Contact,
 )
 import logging
 
@@ -46,3 +47,36 @@ class CaseAdmin(admin.ModelAdmin):
         js = ("js/case_admin.js",)
 
     inlines = [VehicleInline, CaseImageInline]
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = (
+        "address",
+        "phone_number",
+        "email",
+        "instagram_link",
+        "telegram_link",
+    )
+    fieldsets = (
+        (
+            "Main Block",
+            {
+                "fields": (
+                    "address",
+                    "phone_number",
+                    "email",
+                ),
+            },
+        ),
+        (
+            "Social Media Links",
+            {
+                "fields": (
+                    "instagram_link",
+                    "telegram_link",
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+    )

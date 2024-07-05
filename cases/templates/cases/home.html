@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Welcome to the Home Page</h1>
+
+    {% include 'cases/partials/case_list.html' %}
+    
+{#    Not Working#}
+{#    {% include 'cases/cases.html' %}#}
+{#    {% include 'cases/about.html' %}#}
+
+{% endblock %}

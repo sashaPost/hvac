@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="caseContainer">
+    {% include 'cases/partials/case_preview.html' %}
+</div>
+<div id="caseDetailContainer"></div> <!-- Container for detailed content -->
+{#<div class="buttons">#}
+{#    <button hx-get="{% url 'case-detail' case.id %}" hx-target="#caseDetailContainer" hx-swap="innerHTML">Details</button>#}
+{#</div>#}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% if case %}
+<div class="case">
+    <h2>{{ case.title }}</h2>
+    <img src="{% if case.preview_image %}{{ case.preview_image.url }}{% endif %}" alt="{{ case.preview_image_alt }}">
+    
+    {#  New Element  #}
+    <div class="description" style="display: none;">
+        <p>{{ case.description }}</p>
+    </div>
+
+    <div class="buttons">
+        {% if prev_case %}
+        <button hx-get="?case_id={{ prev_case.id }}" hx-target="#caseContainer">Previous</button>
+        {% endif %}
+        {% if next_case %}
+        <button hx-get="?case_id={{ next_case.id }}" hx-target="#caseContainer">Next</button>
+        {% endif %}
+{#        <button hx-get="{% url 'case-detail' case.id %}" hx-target="#caseDetailContainer" hx-swap="innerHTML">Details</button>#}
+        <button id="toggleDescription" hx-trigger="click" hx-target=".description" hx-swap="innerHTML"
+                hx-swap-oob="true" hx-swap-oob-replace="true">
+            Details
+        </button>
+    </div>
+</div>
+{% else %}
+<p>No cases available.</p>
+{% endif %}

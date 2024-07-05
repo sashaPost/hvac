@@ -24,8 +24,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path(route="admin/", view=admin.site.urls),
-    # path(route='cases/', view=include(arg=('cases.urls', 'cases'), namespace='cases')),
-    path(route="cases/", view=include("cases.urls")),
+    path(route="", view=include("cases.urls")),
     path(
         route="ckeditor5/",
         view=include("django_ckeditor_5.urls"),

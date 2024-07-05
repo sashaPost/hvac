@@ -6,8 +6,19 @@ from . import views
 
 
 urlpatterns = [
-    path(route="case-list/", view=views.case_list, name="case_list"),
+    path(route="", view=views.HomeView.as_view(), name="home"),
     path(
-        route="case-detail/<int:case_id>/", view=views.case_detail, name="case_detail"
+        route="about/",
+        view=views.AboutView.as_view(),
+        name="about",
+    ),
+
+    path('cases/', views.CaseListView.as_view(), name='cases'),
+    path('cases/<int:case_id>/', views.CaseDetailView.as_view(), name='case-detail'),
+
+    path(
+        route="contacts/",
+        view=views.ContactView.as_view(),
+        name="contacts",
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

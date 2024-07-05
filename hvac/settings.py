@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django_ckeditor_5",
     "csp",
     "corsheaders",
+    "django_htmx",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,7 @@ MIDDLEWARE = [
     "csp.middleware.CSPMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "hvac.urls"
@@ -80,6 +82,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "cases.context_processors.contact_info",
             ],
         },
     },
@@ -183,16 +186,19 @@ CSP_SCRIPT_SRC = (
     "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js",
     "'unsafe-inline'",
     "'unsafe-eval'",
+    "https://unpkg.com",
+    "https://cdn.jsdelivr.net",
 )
 CSP_STYLE_SRC = (
     "'self'",
     "https://fonts.googleapis.com",
     "https://maps.googleapis.com",
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css",
+    "https://cdn.jsdelivr.net",
     "'unsafe-inline'",
 )
 CSP_IMG_SRC = (
     "'self'",
+    "data:",  # Allow inline data images
     "https://maps.gstatic.com",
     "https://www.google.com",
     "https://www.gstatic.com",
@@ -224,4 +230,5 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.youtube.com",
     "https://play.google.com",
     "https://www.gstatic.com",  # Include Google static content
+    "https://unpkg.com",  # Added for HTMX
 ]

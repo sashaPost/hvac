@@ -4,20 +4,41 @@
     <img src="{% if case.preview_image %}{{ case.preview_image.url }}{% endif %}" alt="{{ case.preview_image_alt }}">
     
     {#  New Element  #}
-    <div class="description" style="display: none;">
-        <p>{{ case.description }}</p>
+    <div class="description"
+         id="caseDescription{{ case.id }}"
+         style="display: none;">
+        <p>{{ case.description|safe }}</p>
     </div>
 
     <div class="buttons">
-        {% if prev_case %}
-        <button hx-get="?case_id={{ prev_case.id }}" hx-target="#caseContainer">Previous</button>
+        {% if previous_case %}
+        <button hx-get="{% url 'cases' %}?case_id={{ previous_case.id }}"
+                hx-target="#caseContainer"
+                hx-swap="innerHTML"
+        >
+            Previous
+        </button>
         {% endif %}
         {% if next_case %}
-        <button hx-get="?case_id={{ next_case.id }}" hx-target="#caseContainer">Next</button>
+        <button hx-get="{% url 'cases' %}?case_id={{ next_case.id }}"
+                hx-target="#caseContainer"
+                hx-swap="innerHTML"
+        >
+            Next
+        </button>
         {% endif %}
-{#        <button hx-get="{% url 'case-detail' case.id %}" hx-target="#caseDetailContainer" hx-swap="innerHTML">Details</button>#}
-        <button id="toggleDescription" hx-trigger="click" hx-target=".description" hx-swap="innerHTML"
-                hx-swap-oob="true" hx-swap-oob-replace="true">
+        <button id="toggleDescription{{ case.id }}"
+                hx-get="{% url 'case-detail' case.id %}"
+{#                hx-target=".description"#}
+                hx-target="#caseDescription{{ case.id }}"
+                hx-swap="innerHTML"
+{#                hx-trigger="click"#}
+                hx-on="htmx:afterOnLoad: 
+                console.log('Button state:', this.innerHTML); 
+                this.innerHTML.includes('Hide') ? this.innerHTML = 'Details' : this.innerHTML = 'Hide'; 
+                console.log('Description visibility:', document.querySelector('#caseDescription{{ case.id }}').style.display); 
+                document.querySelector('#caseDescription{{ case.id }}').style.display = document.querySelector('#caseDescription{{ case.id }}').style.display === 'none' ? 'block' : 'none';"        
+        >
             Details
         </button>
     </div>
@@ -25,3 +46,22 @@
 {% else %}
 <p>No cases available.</p>
 {% endif %}
+
+{#<script>#}
+{#    document.body.addEventListener('htmx:afterSwap', function(event) {#}
+{#       if (event.detail.target.classList.contains('description')) {#}
+{#           const detailsButton = document.getElementById('toggleDescription');#}
+{#           const descriptionDiv = document.querySelector('.description');#}
+{##}
+{#           if (descriptionDiv.style.display === 'none') {#}
+{#               descriptionDiv.style.display = 'block';#}
+{#               detailsButton.textContent = 'Hide';#}
+{#               detailsButton.removeAttribute('hx-get');#}
+{#           } else {#}
+{#               descriptionDiv.style.display = 'none';#}
+{#               detailsButton.textContent = 'Details';#}
+{#               detailsButton.setAttribute('hx-get', "{% url 'case-detail' case.id %}");#}
+{#           }#}
+{#       }#}
+{#    });#}
+{#</script>#}

@@ -19,9 +19,18 @@ class CaseListView(ListView):
         else:
             case = Case.objects.latest("created_at")
 
+        print(f"Case: {case}")
+        print(f"Case ID: {case.id}")
+
         context["case"] = case
         context["next_case"] = Case.objects.filter(id__gt=case.id).order_by("id").first()
         context["previous_case"] = Case.objects.filter(id__lt=case.id).order_by("-id").first()
+
+        print(f"Next Case: {context["next_case"]}")
+        print(f"Previous Case: {context["previous_case"]}")
+
+        print(f"Total cases: {Case.objects.count()}")
+
         return context
 
     def render_to_response(self, context, **response_kwargs):
@@ -34,6 +43,15 @@ class CaseDetailView(DetailView):
     model = Case
     template_name = "cases/partials/case_detail.html"
     context_object_name = "case"
+    pk_url_kwarg = "case_id"
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.htmx:
+            return HttpResponse(context["case"].description)
+        return super().render_to_response(context, **response_kwargs)
+
+# !!!REQUEST:
+# Found one more bug with cases details - 'Details' button works fine only for the first case being presented on the page on load. If I tap 'Previous' than 'Details' - nothing happens, no detailed representation appears on the screen. What may be wrong? How to debug and make it work?
 
 
 class HomeView(ListView):

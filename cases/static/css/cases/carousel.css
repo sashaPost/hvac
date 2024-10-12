@@ -1,0 +1,23 @@
+.carousel-image {
+    max-width: 80%;
+    height: 400px;
+    margin: 0 auto;
+    display: block;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+}
+
+.carousel-indicators button {
+    background-color: #000;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-size: 100%, 100%;
+    width: 30px;
+    height: 30px;
+}

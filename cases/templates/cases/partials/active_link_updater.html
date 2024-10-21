@@ -1,0 +1,6 @@
+<div id="active-link-updater"
+     hx-trigger="load, scroll throttle:500ms"
+     hx-get="{% url 'update_active_link' %}"
+     hx-vars="js:{'section': window.location.hash || '#home'}"
+     hx-swap="innerHTML">
+</div>

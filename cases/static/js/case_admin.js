@@ -20,4 +20,3 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleFuelEngineInline(); // Initial call to populate the variable
     vehicleTypeSelect.addEventListener('change', toggleFuelEngineInline);
 });
-

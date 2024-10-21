@@ -1,19 +1,14 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Contact Us</h4>
-            <p>{{ global_contact.address }}</p>
-            <p>Phone: {{ global_contact.phone_number }}</p>
-            <p>Email: <a href="mailto:{{ global_contact.email }}">{{ global_contact.email }}</a></p>
-        </div>
-        <div class="col-md-6">
-            <h4>Follow Us</h4>
-            {% if global_contact.instagram_link %}
-            <p><a href="{{ global_contact.instagram_link }}" target="_blank">Instagram</a></p>
-            {% endif %}
-            {% if global_contact.telegram_link %}
-            <p><a href="{{ global_contact.telegram_link }}" target="_blank">Telegram</a></p>
-            {% endif %}
-        </div>
-    </div>
-</div>
+{% load i18n %}
+
+<h6>{% trans "Contact Us" %}</h6>
+<p>{{ global_contact.address }}</p>
+<p>{% trans "Phone" %}: {{ global_contact.phone_number }}</p>
+<p>{% trans "Email" %}: <a href="mailto:{{ global_contact.email }}">{{ global_contact.email }}</a></p>
+
+<h6>{% trans "Follow Us" %}</h6>
+{% if global_contact.instagram_link %}
+    <p><a href="{{ global_contact.instagram_link }}" target="_blank">Instagram</a></p>
+{% endif %}
+{% if global_contact.telegram_link %}
+    <p><a href="{{ global_contact.telegram_link }}" target="_blank">Telegram</a></p>
+{% endif %}

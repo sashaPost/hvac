@@ -1,12 +1,12 @@
-from django.db import models
-from django_ckeditor_5.fields import CKEditor5Field
-from django.conf import settings  # To access the User model
-from django.utils import timezone  # For default timestamps
-from phonenumber_field.modelfields import PhoneNumberField
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 import logging
 
+from django.conf import settings  # To access the User model
+from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.utils import timezone  # For default timestamps
+from django_ckeditor_5.fields import CKEditor5Field
+from phonenumber_field.modelfields import PhoneNumberField
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,37 @@ class AboutImage(models.Model):
     class Meta:
         verbose_name = "About Image"
         verbose_name_plural = "About Images"
+
+
+class ServiceCategory(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Service Category"
+        verbose_name_plural = "Service Categories"
+
+
+class Service(models.Model):
+    category = models.ForeignKey(
+        ServiceCategory, on_delete=models.CASCADE, related_name="services"
+    )
+    title = models.CharField(max_length=255)
+    description = CKEditor5Field("Description", config_name="extends")
+    icon = models.ImageField(upload_to="images", blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["category", "title"]
+        verbose_name = "Service"
+        verbose_name_plural = "Services"
 
 
 class Case(models.Model):
@@ -88,38 +119,24 @@ class Vehicle(models.Model):
         max_digits=3, decimal_places=1, blank=True, null=True
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._original_vehicle_type = self.vehicle_type_id if self.pk else None
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            if self.vehicle_type_id != self._original_vehicle_type:
+                if self.vehicle_type.name == VehicleType.ELECTRIC:
+                    self.engine_capacity = None
+        super().save(*args, **kwargs)
+        self._original_vehicle_type = self.vehicle_type_id
+
     def __str__(self):
         return f"{self.brand} {self.model} ({self.year})"
 
     class Meta:
         verbose_name = "Vehicle"
         verbose_name_plural = "Vehicles"
-
-    # def save(self, *args, **kwargs):
-    #     if self.pk:
-    #         try:
-    #             old_instance = Vehicle.objects.get(pk=self.pk)
-    #             # logger.info(f"'old_instance.engine_capacity': {old_instance.engine_capacity}")
-    #             # logger.info(f"'self.engine_capacity': {self.engine_capacity}")
-    #
-    #             if (
-    #                 old_instance.vehicle_type != self.vehicle_type
-    #                 and self.vehicle_type.name == "EV"
-    #             ):
-    #                 self.engine_capacity = None
-    #         except Vehicle.DoesNotExist:
-    #             pass
-    #     super().save(*args, **kwargs)
-
-@receiver(pre_save, sender=Vehicle)
-def update_engine_capacity(sender, instance, **kwargs):
-    if instance.pk:
-        try:
-            old_instance = Vehicle.objects.get(pk=instance.pk)
-            if old_instance.vehicle_type != instance.vehicle_type and instance.vehicle_type.name == VehicleType.ELECTRIC:
-                instance.engine_capacity = None
-        except Vehicle.DoesNotExist:
-            pass
 
 
 class CaseImage(models.Model):

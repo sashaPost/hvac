@@ -1,57 +1,12 @@
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import logging
+
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import DetailView, ListView
-from .models import AboutMessage, Case, Contact
+from django.views.generic import DetailView, ListView, View
 
+from .models import AboutMessage, Case, Contact, ServiceCategory
 
-class CaseListView(ListView):
-    model = Case
-    template_name = "cases/cases.html"
-    context_object_name = "cases"
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        case_id = self.request.GET.get("case_id", None)
-        if case_id:
-            case = get_object_or_404(Case, id=case_id)
-        else:
-            case = Case.objects.latest("created_at")
-
-        print(f"Case: {case}")
-        print(f"Case ID: {case.id}")
-
-        context["case"] = case
-        context["next_case"] = Case.objects.filter(id__gt=case.id).order_by("id").first()
-        context["previous_case"] = Case.objects.filter(id__lt=case.id).order_by("-id").first()
-
-        print(f"Next Case: {context["next_case"]}")
-        print(f"Previous Case: {context["previous_case"]}")
-
-        print(f"Total cases: {Case.objects.count()}")
-
-        return context
-
-    def render_to_response(self, context, **response_kwargs):
-        if self.request.htmx:
-            self.template_name = "cases/partials/case_preview.html"
-        return super().render_to_response(context, **response_kwargs)
-
-
-class CaseDetailView(DetailView):
-    model = Case
-    template_name = "cases/partials/case_detail.html"
-    context_object_name = "case"
-    pk_url_kwarg = "case_id"
-
-    def render_to_response(self, context, **response_kwargs):
-        if self.request.htmx:
-            return HttpResponse(context["case"].description)
-        return super().render_to_response(context, **response_kwargs)
-
-# !!!REQUEST:
-# Found one more bug with cases details - 'Details' button works fine only for the first case being presented on the page on load. If I tap 'Previous' than 'Details' - nothing happens, no detailed representation appears on the screen. What may be wrong? How to debug and make it work?
+logger = logging.getLogger(__name__)
 
 
 class HomeView(ListView):
@@ -59,14 +14,61 @@ class HomeView(ListView):
     template_name = "cases/home.html"
     context_object_name = "cases"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["service_categories"] = ServiceCategory.objects.all()
+        context["about_message"] = AboutMessage.objects.last()
+        context["active_case"] = self.get_queryset().first()
+        return context
 
-class AboutView(DetailView):
-    model = AboutMessage
-    template_name = "cases/about.html"
-    context_object_name = "about_message"
+    def get_queryset(self):
+        return Case.objects.filter(main_page_visibility=True).order_by("-created_at")
 
-    def get_object(self):
-        return AboutMessage.objects.last()
+
+# class AboutView(DetailView):
+#     model = AboutMessage
+#     template_name = "cases/about.html"
+#     context_object_name = "about_message"
+#
+#     def get_object(self):
+#         return AboutMessage.objects.last()
+#
+
+
+class CaseDetailView(DetailView):
+    model = Case
+    template_name = "cases/partials/case_detail_modal.html"
+    context_object_name = "case"
+    pk_url_kwarg = "case_id"
+
+
+class BaseCaseCarouselView(View):
+    def get(self, request, *args, **kwargs):
+        current_case_id = request.GET.get("current")
+        cases = Case.objects.all()
+        active_case = self.get_active_case(cases, current_case_id)
+        return render(
+            request,
+            "cases/partials/cases_carousel.html",
+            {"cases": cases, "active_case": active_case},
+        )
+
+    def get_active_case(self, cases, current_case_id):
+        raise NotImplementedError("Subclasses must implement get_active_case")
+
+
+class PrevCaseView(BaseCaseCarouselView):
+    def get_active_case(self, cases, current_case_id):
+        if not current_case_id:
+            return cases.last()
+        return cases.filter(id__lt=current_case_id).last() or cases.last()
+
+
+class NextCaseView(BaseCaseCarouselView):
+    def get_active_case(self, cases, current_case_id):
+        if not current_case_id:
+            return cases.first()
+        return cases.filter(id__gt=current_case_id).first() or cases.first()
 
 
 class ContactView(DetailView):
@@ -78,64 +80,27 @@ class ContactView(DetailView):
         return Contact.objects.last()
 
 
-# def case_list(request):
-#     case_id = request.GET.get('case_id')
-#     if case_id:
-#         case = get_object_or_404(Case, id=case_id)
-#     else:
-#         case = Case.objects.latest('created_at')
+def update_active_link(request):
+    # logger.debug("update_active_link function called")
+    active_section = request.GET.get("section", "home")
+    html = (
+        f'<script>document.querySelectorAll(".nav-link").forEach(el => el.classList.remove("active"));'
+        f'document.querySelector(\'a[href="{active_section}"]\').classList.add("active");</script>'
+    )
+    return HttpResponse(html)
+
+
+# def scroll_to(request):
+#     logger.debug("scroll_to function called")
+#     section = request.GET.get('section', 'home')
+#     response = HttpResponse()
+#     response['HX-Trigger'] = f'scrollTo'
+#     response['HX-Retarget'] = f'#{section}'
+#     response['HX-Reswap'] = 'none'
 #
-#     next_case = Case.objects.filter(id__gt=case.id).order_by('id').first()
-#     prev_case = Case.objects.filter(id__lt=case.id).order_by('-id').first()
+#     logger.debug(f"Debug: Scrolling to section: {section}")
+#     logger.info(f"Info: Scrolling to section: {section}")
+#     logger.warning(f"Warning: Scrolling to section: {section}")
+#     logger.error(f"Error: This is a test error message")
 #
-#     context = {
-#         'case': case,
-#         'next_case': next_case,
-#         'prev_case': prev_case,
-#     }
-#
-#     if request.htmx:
-#         return render(request, 'cases/partials/case_preview.html', context)
-#     else:
-#         return render(request, 'cases/cases.html', context)
-#
-#
-# def case_detail(request, case_id) -> HttpResponse:
-#     print(f"*'case_detail' was triggered*")
-#     case = get_object_or_404(Case, id=case_id)
-#     return render(request, "cases/partials/case_detail.html", {"case": case})
-#
-#
-# def home(request):
-#     cases = Case.objects.all()
-#     return render(
-#         request,
-#         template_name="cases/home.html",
-#         context={"cases": cases},
-#     )
-#
-#
-# def about(request):
-#     about_message = AboutMessage.objects.last()
-#     # print(about_message.title)
-#     # print(about_message.content)
-#     context = {
-#         "about_message": about_message,
-#     }
-#     return render(
-#         request,
-#         template_name="cases/about.html",
-#         context=context,
-#     )
-#
-#
-# def contacts(request):
-#     contact = Contact.objects.last()
-#     context = {
-#         "contact": contact,
-#     }
-#     return render(
-#         request,
-#         template_name="cases/contacts.html",
-#         context=context,
-#     )
+#     return response

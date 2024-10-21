@@ -17,3 +17,5 @@ core/__pycache__/
 # static/
 
 alg_test.py
+
+.reminder.txt

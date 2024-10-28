@@ -20,24 +20,3 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleFuelEngineInline(); // Initial call to populate the variable
     vehicleTypeSelect.addEventListener('change', toggleFuelEngineInline);
 });
-
-// $(document).ready(function() {
-//     function toggleFuelEngineInline() {
-//         var vehicleTypeSelect = $('#id_vehicle_type');
-//         console.log('vehicleTypeSelect:', vehicleTypeSelect);
-//
-//         var engineCapacity = $('#id_engine_capacity');
-//         console.log('engineCapacity:', engineCapacity);
-//
-//         console.log('vehicleTypeSelect.val():', vehicleTypeSelect.val());
-//         if (vehicleTypeSelect.val() === '1' || vehicleTypeSelect.val() === '3') {
-//             console.log('is STATEMENT WAS TRIGGERED');
-//             engineCapacity.show();
-//         } else {
-//             engineCapacity.hide();
-//         }
-//     }
-//
-//     toggleFuelEngineInline();
-//     $('#id_engine_capacity').change(toggleFuelEngineInline);
-// });

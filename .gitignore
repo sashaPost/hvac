@@ -1,5 +1,5 @@
 # Ignore virtual environment
-venv/
+.venv/
 
 # Ignore environment file
 .env
@@ -17,3 +17,5 @@ core/__pycache__/
 # static/
 
 alg_test.py
+
+.reminder.txt

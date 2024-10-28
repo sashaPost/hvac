@@ -1,12 +1,26 @@
 {% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
 
 {% block content %}
-    <h1>Welcome to the Home Page</h1>
-
-    {% include 'cases/partials/case_list.html' %}
+<main role="main">
+    <section id="home-section" class="section" aria-labelledby="home-title">
+        <h1 id="home-title">{% trans "Welcome to the Home Page" %}</h1>
+    </section>
     
-{#    Not Working#}
-{#    {% include 'cases/cases.html' %}#}
-{#    {% include 'cases/about.html' %}#}
+    <section id="services-section" class="section" aria-labelledby="services-title">
+        <h2 id="services-title">{% trans "Our Services" %}</h2>
+        {% include 'cases/partials/services_list.html' %}
+    </section>
 
+    <section id="about-section" class="section" aria-labelledby="about-title">
+        <h2 id="about-title">{% trans "About Us" %}</h2>
+        {% include 'cases/partials/about_content.html' %}
+    </section>
+
+    <section id="cases-section" class="section" aria-labelledby="cases-title">
+        <h2 id="cases-title" class="mb-4">{% trans "Our Cases" %}</h2>
+        {% include 'cases/partials/cases_carousel.html' with active_case=cases.first %}
+    </section>
+</main>
 {% endblock %}

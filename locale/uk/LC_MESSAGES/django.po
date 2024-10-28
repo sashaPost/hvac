@@ -6,13 +6,14 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-01 16:12+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2024-10-28 22:34+0100\n"
+"PO-Revision-Date: 2024-04-01 16:30+0000\n"
+"Last-Translator: Your Name <your.email@example.com>\n"
+"Last-Translator: Your Name <your.email@example.com>\n"
+"Language-Team: Ukrainian <uk@li.org>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,6 +21,316 @@ msgstr ""
 "11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
 "100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
 "(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-#: core/templates/test.html:1
-msgid "Welcome to our website!"
-msgstr ""
+
+#: cases/admin.py:26 cases/models.py:51
+#| msgid "About"
+msgid "About Image"
+msgstr "Зображення (про нас)"
+
+#: cases/admin.py:27 cases/models.py:52
+msgid "About Images"
+msgstr "Зображення (про нас)"
+
+#: cases/admin.py:32 cases/models.py:190
+msgid "Vehicle"
+msgstr "Транспортний засіб"
+
+#: cases/admin.py:33 cases/models.py:191
+msgid "Vehicles"
+msgstr "Транспортні засоби"
+
+#: cases/admin.py:39 cases/models.py:207
+msgid "Case Image"
+msgstr "Зображення роботи"
+
+#: cases/admin.py:40 cases/models.py:208
+msgid "Case Images"
+msgstr "Зображення роботи"
+
+#: cases/admin.py:53 cases/models.py:40
+msgid "About Message"
+msgstr "Повідомлення про нас"
+
+#: cases/admin.py:54
+msgid "About Messages"
+msgstr "Повідомлення про нас"
+
+#: cases/admin.py:63 cases/models.py:86
+msgid "Service"
+msgstr "Послуга"
+
+#: cases/admin.py:64 cases/models.py:87 templates/header.html:28
+msgid "Services"
+msgstr "Послуги"
+
+#: cases/admin.py:80
+msgid "Number of Services"
+msgstr "Послуги"
+
+#: cases/admin.py:86
+msgid "Service Category"
+msgstr "Категорія послуг"
+
+#: cases/admin.py:87
+msgid "Service Categories"
+msgstr "Категорії послуг"
+
+#: cases/admin.py:98 cases/admin.py:148
+msgid "Basic Information"
+msgstr "Загальна інформація"
+
+#: cases/admin.py:101
+#, fuzzy
+msgid "Engine Details"
+msgstr "Об'єм двигуна"
+
+#: cases/admin.py:152
+msgid "Images"
+msgstr "Зображення"
+
+#: cases/admin.py:169
+msgid "Main Information"
+msgstr "Основна інформація"
+
+#: cases/admin.py:179
+msgid "Social Media Links"
+msgstr "Посилання на соціальні мережі"
+
+#: cases/apps.py:8 cases/models.py:113 templates/header.html:46
+msgid "Cases"
+msgstr "Роботи"
+
+#: cases/models.py:16
+msgid "Created At"
+msgstr "Створено"
+
+#: cases/models.py:17
+msgid "Updated At"
+msgstr "Оновлено"
+
+#: cases/models.py:24 cases/models.py:76 cases/models.py:94
+msgid "Title"
+msgstr "Назва"
+
+#: cases/models.py:25 cases/models.py:95
+msgid "Text"
+msgstr "Текст"
+
+#: cases/models.py:44 cases/models.py:48 cases/models.py:200
+msgid "Image"
+msgstr "Зображення"
+
+#: cases/models.py:45 cases/models.py:201
+msgid "Image Alt"
+msgstr "Альтернативний текст для зображення"
+
+#: cases/models.py:56
+msgid "Name"
+msgstr "Назва"
+
+#: cases/models.py:72
+msgid "Category"
+msgstr "Категорія"
+
+#: cases/models.py:77
+msgid "Description"
+msgstr "Опис"
+
+#: cases/models.py:78
+msgid "Icon"
+msgstr "Значок"
+
+#: cases/models.py:79
+msgid "Is Active"
+msgstr "Активна"
+
+#: cases/models.py:96
+msgid "Preview Image"
+msgstr "Зображення для попереднього перегляду"
+
+#: cases/models.py:97
+msgid "Preview Image Alt"
+msgstr "Альтернативний текст зображення для попереднього перегляду"
+
+#: cases/models.py:98
+msgid "Main Page Visibility"
+msgstr "Видимість на головній сторінці"
+
+#: cases/models.py:101
+msgid "Added By"
+msgstr "Додав"
+
+#: cases/models.py:112 cases/models.py:146
+msgid "Case"
+msgstr "Робота"
+
+#: cases/models.py:124
+msgid "Fuel Engine"
+msgstr "Паливний двигун"
+
+#: cases/models.py:125
+msgid "Electric Vehicle"
+msgstr "Електромобіль"
+
+#: cases/models.py:126
+msgid "Hybrid Vehicle"
+msgstr "Гібридний автомобіль"
+
+#: cases/models.py:129 cases/templates/cases/partials/case_detail_modal.html:17
+msgid "Type"
+msgstr "Тип"
+
+#: cases/models.py:139 cases/models.py:152
+msgid "Vehicle Type"
+msgstr "Тип транспортного засобу"
+
+#: cases/models.py:140
+msgid "Vehicle Types"
+msgstr "Типи транспортних засобів"
+
+#: cases/models.py:156
+msgid "Brand"
+msgstr "Виробник"
+
+#: cases/models.py:157
+msgid "Model"
+msgstr "Модель"
+
+#: cases/models.py:159
+msgid "Year"
+msgstr "Рік"
+
+#: cases/models.py:166 cases/templates/cases/partials/case_detail_modal.html:14
+msgid "Engine Capacity"
+msgstr "Об'єм двигуна"
+
+#: cases/models.py:171
+msgid "In litres"
+msgstr "В літрах"
+
+#: cases/models.py:212
+msgid "Address"
+msgstr "Адреса"
+
+#: cases/models.py:213
+msgid "Phone Number"
+msgstr "Номер телефону"
+
+#: cases/models.py:214 cases/templates/cases/partials/contacts.html:6
+msgid "Email"
+msgstr "Електронна пошта"
+
+#: cases/models.py:215
+msgid "Instagram"
+msgstr "Інстаграм"
+
+#: cases/models.py:216
+msgid "Telegram"
+msgstr "Телеграм"
+
+#: cases/models.py:219 templates/footer.html:7
+msgid "Contact Information"
+msgstr "Контактна інформація"
+
+#: cases/models.py:222
+msgid "Contact"
+msgstr "Контакти"
+
+#: cases/models.py:223 cases/templates/cases/contacts.html:6
+#: templates/header.html:55
+msgid "Contacts"
+msgstr "Контакти"
+
+#: cases/templates/cases/home.html:8
+msgid "Welcome to the Home Page"
+msgstr "Ласкаво просимо на домашню сторінку"
+
+#: cases/templates/cases/home.html:12
+msgid "Our Services"
+msgstr "Наші послуги"
+
+#: cases/templates/cases/home.html:17
+#| msgid "About"
+msgid "About Us"
+msgstr "Про нас"
+
+#: cases/templates/cases/home.html:22
+msgid "Our Cases"
+msgstr "Наші роботи"
+
+#: cases/templates/cases/partials/about_content.html:9
+msgid "About us image"
+msgstr "Зображення (про нас)"
+
+#: cases/templates/cases/partials/about_content.html:22
+msgid "No about content available."
+msgstr "Інформація відсутня"
+
+#: cases/templates/cases/partials/case_detail_modal.html:10
+msgid "Vehicle Information:"
+msgstr "Інформація про транспортний засіб:"
+
+#: cases/templates/cases/partials/case_detail_modal.html:14
+#: cases/templates/cases/partials/cases_carousel.html:19
+msgid "L"
+msgstr "Л"
+
+#: cases/templates/cases/partials/case_detail_modal.html:26
+msgid "Close"
+msgstr "Закрити"
+
+#: cases/templates/cases/partials/cases_carousel.html:29
+msgid "View Details"
+msgstr "Переглянути деталі"
+
+#: cases/templates/cases/partials/cases_carousel.html:43
+msgid "Previous"
+msgstr "Попередня"
+
+#: cases/templates/cases/partials/cases_carousel.html:51
+msgid "Next"
+msgstr "Наступна"
+
+#: cases/templates/cases/partials/contacts.html:3
+msgid "Contact Us"
+msgstr "Контакти"
+
+#: cases/templates/cases/partials/contacts.html:5
+msgid "Phone"
+msgstr "Телефон"
+
+#: cases/templates/cases/partials/contacts.html:8
+msgid "Follow Us"
+msgstr "Слідкуйте за нами"
+
+#: cases/templates/cases/partials/services_list.html:24
+msgid "No services available in this category."
+msgstr "У цій категорії немає послуг."
+
+#: hvac/settings.py:133
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: hvac/settings.py:134
+msgid "English"
+msgstr "Англійська"
+
+#: templates/footer.html:11
+msgid "Location"
+msgstr "Розташування"
+
+#: templates/header.html:7
+msgid "Company Logo"
+msgstr "Логотип Компанії"
+
+#: templates/header.html:8
+msgid "Company Name"
+msgstr "Назва Компанії"
+
+#: templates/header.html:19
+msgid "Home"
+msgstr "Головна"
+
+#: templates/header.html:37
+msgid "About"
+msgstr "Про нас"

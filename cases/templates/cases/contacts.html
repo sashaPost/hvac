@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% block content %}
-    <h1>Contacts</h1>
+    <h1>{% trans 'Contacts' %}</h1>
 
     {% include 'cases/partials/contacts.html' %}
-    
+
 {% endblock %}

@@ -1,0 +1,11 @@
+{% if show_engine_capacity %}
+<div class="form-row field-engine_capacity">
+    {{ field.field.label_tag }}
+    {{ field.field }}
+</div>
+{% else %}
+<div class="form-row field-engine_capacity" style="display: none;">
+    {{ field.field.label_tag }}
+    {{ field.field }}
+</div>
+{% endif %}

@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="case.title">{{ case.title }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    {% if case.vehicle %}
+    <div class="vehicle-info mb-3">
+        <h6>{% trans "Vehicle Information:" %}</h6>
+        <p>
+            {{ case.vehicle.brand }} {{ case.vehicle.model }} ({{ case.vehicle.year }})
+            {% if case.vehicle.engine_capacity %}
+            - {% trans "Engine Capacity" %}: {{ case.vehicle.engine_capacity }} {% trans "L" %}
+            {% endif %}
+            <br>
+            {% trans "Type" %}: {{ case.vehicle.get_vehicle_type_display }}
+        </p>
+    </div>
+    {% endif %}
+    <div class="case-description">
+        {{ case.description|safe }}
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+</div>

@@ -1,1 +1,291 @@
-/*echo 'test'*/
+/* Global Styles */
+/*:root {*/
+/*    --header-height: 76px; !* Default value, will be updated by JS *!*/
+/*}*/
+
+body {
+    padding-top: 76px; /* Adjust this value based on your header height */
+    /*padding-top: var(--header-height);*/
+}
+
+/* Header Styles */
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+/* Language Switcher Styles */
+.language-switcher select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.25rem center;
+    background-size: 16px 12px;
+}
+
+.language-switcher select:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.language-switcher form {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Add this for the active nav link */
+.nav-link.active {
+    background-color: #007bff;
+    color: white !important;
+}
+
+/* Add any other styles you need for your sections */
+.section {
+    padding: 2rem 0;
+}
+
+
+/* Carousel Styles */
+.carousel {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel-item {
+    flex: 0 0 100%;
+}
+
+.carousel-image {
+    max-width: 80%;
+    height: 00px;
+    margin: 0 auto;
+    display: block;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.carousel-button:first-of-type {
+    left: 10px;
+}
+
+.carousel-button:last-of-type {
+    right: 10px;
+}
+
+
+/* Services Styles */
+.service-category {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    height: 100%;
+}
+.category-title {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+.service-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+.service-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.service-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.service-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+.service-title {
+    margin: 0;
+    font-size: 1.1rem;
+}
+.service-description {
+    font-size: 0.9rem;
+}
+
+
+/* About Section */
+.about-section {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+.about-title {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+.about-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+.about-content {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+@media (max-width: 767px) {
+    .about-section {
+        text-align: center;
+    }
+}
+
+
+/* Cases Section Styles */
+#cases-carousel {
+    margin-bottom: 2rem;
+}
+
+.case-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.case-image {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.case-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+    transition: .5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.case-container:hover .case-overlay {
+    height: 100%;
+}
+
+.case-container:hover .case-image {
+    transform: scale(1.1);
+}
+
+.case-title {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.vehicle-info {
+    color: #ddd;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.view-details {
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-footer {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Map Styles */
+.map-container {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
+#home-section {
+    /*margin-top: calc(var(--header-height) * -1 + 2rem); !* Adjust the 2rem as needed *!*/
+    padding-top: 4rem; /* Add extra padding to the first section to account for the fixed header */
+}
+
+
+/* Scroll to Top Button */
+#scroll-to-top {
+    z-index: 1000;
+    opacity: 0.8;
+    transition: all 0.3s;
+    background-color: white;
+}
+
+#scroll-to-top:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+}
+
+#scroll-to-top svg {
+    color: #007bff; /* This sets the arrow color to blue */
+}

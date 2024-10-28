@@ -1,0 +1,62 @@
+{% load i18n %}
+{% load static %}
+
+<div id="cases-section" class="container mt-4">
+    <div id="cases-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for case in cases %}
+            <div id="case-{{ case.id }}"
+                 class="carousel-item {% if case == active_case %}active{% endif %}">
+                <div class="case-container">
+                    <img src="{{ case.preview_image.url }}" class="case-image" alt="{{ case.title }}">
+                    
+                    <div class="case-overlay">
+                        <h5 class="case-title">{{ case.title }}</h5>
+                        {% if case.vehicle %}
+                        <p class="vehicle-info">
+                            {{ case.vehicle.brand }} {{ case.vehicle.model }} ({{ case.vehicle.year }})
+                            {% if case.vehicle.engine_capacity %}
+                            - {{ case.vehicle.engine_capacity }} {% trans "L" %}
+                            {% endif %}
+                        </p>
+                        {% endif %}
+                        <button class="btn btn-primary view-details"
+                            hx-get="{% url 'case-detail' case_id=case.id %}"
+                            hx-target="#case-detail-modal .modal-content"
+                            hx-trigger="click"
+                            data-bs-toggle="modal"
+                            data-bs-target="#case-detail-modal">
+                            {% trans "View Details" %}
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    
+        <button class="carousel-control-prev"
+                type="button"
+                data-bs-target="#cases-carousel" 
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">{% trans "Previous" %}</span>
+        </button>
+    
+        <button class="carousel-control-next"
+                type="button"
+                data-bs-target="#cases-carousel" 
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">{% trans "Next" %}</span>
+        </button>
+    </div>
+</div>
+
+<div id="case-detail-modal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Case details will be loaded here by HTMX -->
+        </div>
+    </div>
+</div>

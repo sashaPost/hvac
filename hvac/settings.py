@@ -10,14 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-from pathlib import Path
-from django.core.management.utils import get_random_secret_key
-from dotenv import load_dotenv
-from .ckeditor_config import CKEDITOR_5_CONFIGS
 import os
+from pathlib import Path
 
+from django.core.management.utils import get_random_secret_key
+from django.utils.translation import gettext_lazy as _
 
-load_dotenv()
+# from dotenv import load_dotenv
+#
+# load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,12 +56,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
     "csp.middleware.CSPMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -82,6 +83,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.i18n",
                 "cases.context_processors.contact_info",
             ],
         },
@@ -124,11 +126,46 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+# LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "uk"
 
-TIME_ZONE = os.getenv("TIME_ZONE")
+LANGUAGES = [
+    ("uk", _("Ukrainian")),
+    ("en", _("English")),
+]
 
 USE_I18N = True
+USE_L10N = True
+
+# Session settings
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_COOKIE_NAME = "sessionid"
+SESSION_SAVE_EVERY_REQUEST = True  # Important for language persistence
+
+# Language cookie settings
+LANGUAGE_COOKIE_NAME = "django_language"
+LANGUAGE_COOKIE_AGE = None
+LANGUAGE_COOKIE_PATH = "/"
+LANGUAGE_COOKIE_DOMAIN = None
+LANGUAGE_COOKIE_SECURE = False
+LANGUAGE_COOKIE_HTTPONLY = False
+LANGUAGE_COOKIE_SAMESITE = "Lax"
+
+# LANGUAGE_COOKIE_NAME = "django_language"
+# LANGUAGE_COOKIE_AGE = None
+# LANGUAGE_COOKIE_PATH = "/"
+# LANGUAGE_COOKIE_SECURE = False
+# LANGUAGE_COOKIE_HTTPONLY = True
+# # LANGUAGE_COOKIE_SAMESITE = 'Lax'
+# LANGUAGE_COOKIE_SAMESITE = 'None'
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, "locale"),
+]
+
+# TIME_ZONE = os.getenv("TIME_ZONE")
+TIME_ZONE = "Europe/Berlin"
 
 USE_TZ = True
 
@@ -147,32 +184,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+from .ckeditor_config import CKEDITOR_5_CONFIGS
+
 CKEDITOR_CONFIG = CKEDITOR_5_CONFIGS
 CKEDITOR_5_CUSTOM_CSS = "css/ckeditor5/admin_dark_mode_fix.css"
 CKEDITOR_5_FILE_STORAGE = "hvac.storage_backends.MediaStorage"
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "%(asctime)s - %(levelname)s - %(module)s - %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        },
-    },
-    "handlers": {
-        "file": {
-            "level": "DEBUG",
-            "class": "logging.FileHandler",
-            "filename": "logs/django.log",
-            "formatter": "verbose",
-        },
-    },
-    "root": {
-        "handlers": ["file"],
-        "level": "DEBUG",
-    },
-}
+from .logging_config import LOGGING
+
+LOGGING = LOGGING
 
 CSP_DEFAULT_SRC = (
     "'self'",

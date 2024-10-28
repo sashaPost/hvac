@@ -1,57 +1,79 @@
+{% load i18n %}
 {% load static %}
 
-<div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-        <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <img src="{% static 'images/company_logo.png' %}" alt="Company Logo" class="img-fluid me-2" width="40" height="32">
-            <span class="fs-4">Company Name</span>
+<header class="py-3 mb-4 border-bottom fixed-top bg-white">
+    <div class="container d-flex flex-wrap justify-content-center">
+        <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
+            <img src="{% static 'images/company_logo.png' %}" alt="{% trans 'Company Logo' %}" class="me-2" width="40" height="32">
+            <span class="fs-4">{% trans 'Company Name' %}</span>
         </a>
+        <nav aria-label="Main navigation">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a href="#home-section"
+                       class="nav-link"
+                       hx-get="#home-section"
+                       hx-target="body"
+                       hx-swap="scroll:top"
+                       hx-trigger="click"
+                       hx-push-url="true">{% trans 'Home' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#services-section"
+                       class="nav-link"
+                       hx-get="#services-section"
+                       hx-target="body"
+                       hx-swap="scroll:top"
+                       hx-trigger="click"
+                       hx-push-url="true">{% trans 'Services' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about-section"
+                       class="nav-link"
+                       hx-get="#about-section"
+                       hx-target="body"
+                       hx-swap="scroll:top"
+                       hx-trigger="click"
+                       hx-push-url="true">{% trans 'About' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#cases-section"
+                       class="nav-link"
+                       hx-get="#cases-section"
+                       hx-target="body"
+                       hx-swap="scroll:top"
+                       hx-trigger="click"
+                       hx-push-url="true">{% trans 'Cases' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#footer-contacts"
+                       class="nav-link"
+                       hx-get="#footer-contacts"
+                       hx-target="body"
+                       hx-swap="scroll:top"
+                       hx-trigger="click"
+                       hx-push-url="true">{% trans 'Contacts' %}</a>
+                </li>
+            </ul>
+        </nav>
 
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'cases' %}active{% endif %}" href="{% url 'cases' %}">Cases</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if request.resolver_match.url_name == 'contacts' %}active{% endif %}" href="{% url 'contacts' %}">Contacts</a>
-            </li>
-        </ul>
-    </header>
-</div>
+        {% include 'cases/partials/language_switcher.html' %}
 
-
-
-{#{% load static %}#}
-{##}
-{#<header class="bg-light py-3">#}
-{#    <div class="container d-flex justify-content-between align-items-center">#}
-{#        <div class="logo">#}
-{#            <a href="{% url 'home' %}">#}
-{#            <a href="#">#}
-{#                <img src="{% static 'images/company_logo.png' %}" alt="Company Logo" class="img-fluid">#}
-{#            </a>#}
-{#        </div>#}
-{#        <nav>#}
-{#            <ul class="nav">#}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="{% url 'home' %}">Home</a>#}
-{#                </li>#}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="{% url 'about' %}">About</a>#}
-{#                </li>#}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="{% url 'cases' %}">Cases</a>#}
-{#                </li>#}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="{% url 'contacts' %}">Contacts</a>#}
-{#                </li>#}
-{#            </ul>#}
-{#        </nav>#}
-{#    </div>#}
-{#</header>#}
-{##}
+{#        <!-- Language Switcher -->#}
+{#        <form action="{% url 'set_language' %}" method="post" class="ms-3">#}
+{#            {% csrf_token %}#}
+{#            <input name="next" type="hidden" value="{{ request.path }}">#}
+{#            <select name="language" onchange="this.form.submit()">#}
+{#                {% get_current_language as CURRENT_LANGUAGE %}#}
+{#                {% get_available_languages as AVAILABLE_LANGUAGES %}#}
+{#                {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}#}
+{#                {% for language in languages %}#}
+{#                    <option value="{{ language.code }}"#}
+{#                            {% if language.code == CURRENT_LANGUAGE %}selected{% endif %}>#}
+{#                        {{ language.name_local }}#}
+{#                    </option>#}
+{#                {% endfor %}#}
+{#            </select>#}
+{#        </form>#}
+    </div>
+</header>

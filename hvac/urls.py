@@ -16,19 +16,24 @@ Including another URLconf
 """
 
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
-
 from django.contrib import admin
 from django.urls import include, path
 
-
 urlpatterns = [
-    path(route="admin/", view=admin.site.urls),
-    path(route="", view=include("cases.urls")),
+    # path(route="", view=include("cases.urls")),
     path(
         route="ckeditor5/",
         view=include("django_ckeditor_5.urls"),
         name="ck_editor_5_upload_file",
     ),
+    path(route="i18n/", view=include("django.conf.urls.i18n")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += i18n_patterns(
+    path("admin/", admin.site.urls),
+    path("", include("cases.urls")),
+    prefix_default_language=False,
+)

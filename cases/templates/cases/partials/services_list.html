@@ -1,0 +1,30 @@
+{% load i18n %}
+
+<div class="row">
+    {% for category in service_categories %}
+        <div class="col-md-6 mb-6">
+            <div class="service-category">
+                <h3 class="category-title">{{ category.name }}</h3>
+                <ul class="list-unstyled">
+                    {% for service in category.services.all %}
+                        {% if service.is_active %}
+                            <li class="service-item">
+                                <div class="service-header">
+                                    {% if service.icon %}
+                                        <img src="{{ service.icon.url }}" alt="{{ service.title }} icon" class="service-icon">
+                                    {% endif %}
+                                    <h4 class="service-title">{{ service.title }}</h4>
+                                </div>
+                                <div class="service-description">{{ service.description|safe }}</div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                
+                    {% if not category.services.exists %}
+                        <p>{% trans "No services available in this category." %}</p>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
+</div>

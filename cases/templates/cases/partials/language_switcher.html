@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<form action="/set-language/"
+      method="post"
+      class="d-flex align-items-center mb-0">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ request.path }}">
+    <select name="language"
+            onchange="this.form.submit()"
+            class="form-select form-select-sm border-0 bg-transparent"
+            style="cursor: pointer; width: auto; padding-right: 1.5rem; margin-left: 1rem;">
+        <option value="uk" {% if LANGUAGE_CODE == 'uk' %}selected{% endif %}>🇺🇦 UA</option>
+        <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🇬🇧 EN</option>
+    </select>
+</form>

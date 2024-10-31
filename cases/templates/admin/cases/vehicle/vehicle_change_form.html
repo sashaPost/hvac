@@ -4,32 +4,19 @@
 {% block field_sets %}
 <div id="vehicle-form">
     {% for fieldset in adminform %}
-        <fieldset class="module aligned {{ fieldset.classes }}">
+    <fieldset class="module aligned {{ fieldset.classes }}">
         {% for line in fieldset %}
-            {% for field in line %}
-                {% if field.field.name == 'vehicle_type' %}
-                    <div class="form-row field-{{ field.field.name }}">
-                        {{ field.field.label_tag }}
-                        <div hx-get="{% url 'admin:update_engine_capacity' %}"
-                             hx-trigger="change"
-                             hx-target="#engine-capacity-container"
-                             hx-swap="outerHTML">
-                            {{ field.field }}
-                        </div>
-                    </div>
-                {% elif field.field.name == 'engine_capacity' %}
-                    <div id="engine-capacity-container">
-                        {% include "admin/cases/vehicle/engine_capacity_field.html" with show_engine_capacity=True field=field %}
-                    </div>
-                {% else %}
-                    <div class="form-row field-{{ field.field.name }}">
-                        {{ field.field.label_tag }}
-                        {{ field.field }}
-                    </div>
-                {% endif %}
-            {% endfor %}
+        {% for field in line %}
+        <div class="form-row field-{{ field.field.name }}">
+            {{ field.field.label_tag }}
+            {{ field.field }}
+            {% if field.field.help_text %}
+                <div class="help">{{ field.field.help_text }}</div>
+            {% endif %}
+        </div>
         {% endfor %}
-        </fieldset>
+        {% endfor %}
+    </fieldset>
     {% endfor %}
 </div>
 {% endblock %}

@@ -1,10 +1,9 @@
 import logging
 
 from django.contrib import admin
-from django.http import HttpResponse
-from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 
+from .forms import CaseAdminForm, CaseImageAdminForm, VehicleAdminForm
 from .models import (
     AboutImage,
     AboutMessage,
@@ -29,12 +28,18 @@ class AboutImageInline(admin.TabularInline):
 
 class VehicleInline(admin.StackedInline):
     model = Vehicle
+    form = VehicleAdminForm
+    extra = 1
     verbose_name = _("Vehicle")
     verbose_name_plural = _("Vehicles")
+
+    class Media:
+        js = ("js/vehicle_admin.js",)
 
 
 class CaseImageInline(admin.TabularInline):
     model = CaseImage
+    form = CaseImageAdminForm
     extra = 3
     verbose_name = _("Case Image")
     verbose_name_plural = _("Case Images")
@@ -46,15 +51,9 @@ class AboutMessageAdmin(admin.ModelAdmin):
     list_display = ("title", "created_at", "updated_at")
     search_fields = ["title", "content"]
 
-    # def get_app_label(self):
-    #     return _("About Messages")
-
     class Meta:
         verbose_name = _("About Message")
         verbose_name_plural = _("About Messages")
-
-
-# admin.site.register(AboutMessage, AboutMessageAdmin)
 
 
 class ServiceInline(admin.StackedInline):
@@ -75,9 +74,6 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
 
     service_count.short_description = _("Number of Services")
 
-    # def get_app_label(self):
-    #     return _("Service Categories")
-
     class Meta:
         verbose_name = _("Service Category")
         verbose_name_plural = _("Service Categories")
@@ -85,6 +81,7 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
+    form = VehicleAdminForm
     change_form_template = "admin/cases/vehicle/vehicle_change_form.html"
     list_display = ("brand", "model", "year", "vehicle_type", "engine_capacity")
     list_filter = ("vehicle_type", "year")
@@ -93,57 +90,43 @@ class VehicleAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             _("Basic Information"),
-            {"fields": ("case", "vehicle_type", "brand", "model", "year")},
+            {
+                "fields": ("case", "vehicle_type", "brand", "model", "year"),
+                "classes": ("wide",),
+            },
         ),
         (
             _("Engine Details"),
             {
                 "fields": ("engine_capacity",),
-                "classes": ("collapse",),
+                "classes": ("wide",),  # Remove collapse to ensure visibility
             },
         ),
     )
 
-    def get_urls(self):
-        from django.urls import path
+    class Media:
+        js = ("js/vehicle_admin.js",)
 
-        urls = super().get_urls()
-        custom_urls = [
-            path(
-                "update_engine_capacity/",
-                self.update_engine_capacity,
-                name="update_engine_capacity",
-            ),
-        ]
-        return custom_urls + urls
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        if obj and obj.vehicle_type.name == VehicleType.ELECTRIC:
+            form.fields["engine_capacity"].required = False
+        return form
 
-    def update_engine_capacity(self, request):
-        vehicle_type_id = request.GET.get("vehicle_type")
-        try:
-            vehicle_type = VehicleType.objects.get(id=vehicle_type_id)
-            show_engine_capacity = vehicle_type.name in [
-                VehicleType.FUEL_ENGINE,
-                VehicleType.HYBRID,
-            ]
-        except VehicleType.DoesNotExist:
-            show_engine_capacity = False
-
-        context = {"show_engine_capacity": show_engine_capacity}
-        html = render_to_string(
-            "admin/cases/vehicle/engine_capacity_field.html", context
-        )
-        return HttpResponse(html)
+    def save_model(self, request, obj, form, change):
+        if obj.vehicle_type.name == VehicleType.ELECTRIC:
+            obj.engine_capacity = None
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(Case)
 class CaseAdmin(admin.ModelAdmin):
-    class Media:
-        js = ("js/case_admin.js",)
-
+    form = CaseAdminForm
     inlines = [VehicleInline, CaseImageInline]
     list_display = ("title", "created_at", "main_page_visibility", "added_by")
     list_filter = ("main_page_visibility", "created_at")
     search_fields = ["title", "description"]
+    readonly_fields = ("created_at", "updated_at")
 
     fieldsets = (
         (
@@ -156,39 +139,47 @@ class CaseAdmin(admin.ModelAdmin):
                 "fields": ("preview_image", "preview_image_alt"),
             },
         ),
+        (
+            _("Timestamps"),
+            {
+                "fields": ("created_at", "updated_at"),
+                "classes": ("collapse",),
+            },
+        ),
     )
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.added_by = request.user
+        super().save_model(request, obj, form, change)
+
+    class Media:
+        js = ("js/case_admin.js",)
 
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (
+            _("Main Information"),
+            {
+                "fields": ("address", "phone_number", "email"),
+            },
+        ),
+        (
+            _("Social Media Links"),
+            {
+                "fields": ("instagram_link", "telegram_link"),
+                "classes": ("collapse",),
+            },
+        ),
+    )
     list_display = (
         "address",
         "phone_number",
         "email",
         "instagram_link",
         "telegram_link",
-    )
-    fieldsets = (
-        (
-            _("Main Information"),
-            {
-                "fields": (
-                    "address",
-                    "phone_number",
-                    "email",
-                ),
-            },
-        ),
-        (
-            _("Social Media Links"),
-            {
-                "fields": (
-                    "instagram_link",
-                    "telegram_link",
-                ),
-                "classes": ("collapse",),
-            },
-        ),
     )
 
 

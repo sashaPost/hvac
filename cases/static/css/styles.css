@@ -18,26 +18,42 @@ body {
 }
 
 /* Language Switcher Styles */
-.language-switcher select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.25rem center;
-    background-size: 16px 12px;
+.language-switcher {
+    margin-left: 1rem;
 }
 
-.language-switcher select:focus {
-    outline: none;
+.language-switcher .btn-group {
     box-shadow: none;
-    border-color: transparent;
 }
 
-.language-switcher form {
-    height: 100%;
-    display: flex;
-    align-items: center;
+.language-switcher .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    font-weight: 500;
+}
+
+.language-switcher .btn-outline-primary {
+    background-color: transparent;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.language-switcher .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.language-switcher .btn-primary.active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+/* Add spacing between flag emoji and text */
+.language-switcher .btn span {
+    margin-left: 0.25rem;
 }
 
 /* Add this for the active nav link */

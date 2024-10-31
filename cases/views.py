@@ -1,12 +1,12 @@
 import logging
 
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect, render  # get_object_or_404,
 from django.template.response import TemplateResponse
 from django.urls import resolve
 from django.utils import translation
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, ListView, View
 
@@ -15,71 +15,57 @@ from .models import AboutMessage, Case, Contact, ServiceCategory
 logger = logging.getLogger(__name__)
 
 
-# @require_POST
-# def set_language(request):
-#     lang_code = request.POST.get("language")
-#     # logger.info(f"lang_code: {lang_code}")
-#
-#     if lang_code and lang_code in dict(settings.LANGUAGES):
-#         translation.activate(lang_code)
-#
-#         request.session["django_language"] = lang_code
-#
-#         if request.headers.get("HX-Request"):
-#             current_url = request.POST.get('next', '/')
-#             current_url_match = resolve(current_url)
-#
-#             view_func = current_url_match.func
-#             if hasattr(view_func, 'view_class'):
-#                 view = view_func.view_class()
-#                 view.setup(request)
-#                 response = view.dispatch(request)
-#             else:
-#                 response = view_func(request)
-#
-#             if isinstance(response, TemplateResponse):
-#                 response.render()
-#
-#             response.set_cookie(
-#                 settings.LANGUAGE_COOKIE_NAME,
-#                 lang_code,
-#                 max_age=settings.LANGUAGE_COOKIE_AGE,
-#                 path=settings.LANGUAGE_COOKIE_PATH,
-#                 # domain=settings.LANGUAGE_COOKIE_DOMAIN,
-#                 secure=settings.LANGUAGE_COOKIE_SECURE or None,
-#                 httponly=settings.LANGUAGE_COOKIE_HTTPONLY or None,
-#                 samesite=settings.LANGUAGE_COOKIE_SAMESITE or None,
-#             )
-#
-#             return response
-#
-#     # Fallback for non-HTMX requests
-#     next_url = request.POST.get('next', '/')
-#     return redirect(next_url)
-
-
 @require_POST
 def set_language(request):
     lang_code = request.POST.get("language")
 
-    # If valid language code
     if lang_code in ["en", "uk"]:
-        # Activate the language
         translation.activate(lang_code)
-        # Set the session
         request.session["django_language"] = lang_code
 
-    # Get where to redirect
-    next_url = request.POST.get("next", "/")
-    response = redirect(next_url)
+        if request.headers.get("HX-Request"):
+            # For HTMX requests, return a response that triggers a page refresh
+            response = HttpResponse()
+            response["HX-Refresh"] = "true"
+        else:
+            # For regular requests, redirect as before
+            next_url = request.POST.get("next", "/")
+            response = redirect(next_url)
 
-    # Set the cookie
-    response.set_cookie("django_language", lang_code)
+        # Set cookie with secure flags
+        response.set_cookie(
+            "django_language",
+            lang_code,
+            max_age=365 * 24 * 60 * 60,  # 1 year
+            path="/",
+            secure=request.is_secure(),  # True if HTTPS
+            httponly=True,  # Not accessible via JavaScript
+            samesite="Lax",
+        )
+        return response
 
-    return response
+    return HttpResponseBadRequest("Invalid language code")
 
 
-from django.utils.translation import gettext_lazy as _
+# @require_POST
+# def set_language(request):
+#     lang_code = request.POST.get("language")
+#
+#     # If valid language code
+#     if lang_code in ["en", "uk"]:
+#         # Activate the language
+#         translation.activate(lang_code)
+#         # Set the session
+#         request.session["django_language"] = lang_code
+#
+#     # Get where to redirect
+#     next_url = request.POST.get("next", "/")
+#     response = redirect(next_url)
+#
+#     # Set the cookie
+#     response.set_cookie("django_language", lang_code)
+#
+#     return response
 
 
 class HomeView(ListView):
